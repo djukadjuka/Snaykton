@@ -5,7 +5,7 @@ import encodings.base64_codec as base64
 import os
 
 
-__snaykton_scores_filename = os.getcwd() + '\\snaykton_scores.score'
+__SNAYKTON_SCORES_FILENAME = os.getcwd() + '\\snaykton_scores.score'
 
 
 def __generate_high_score_list():
@@ -36,7 +36,7 @@ def __decode_high_scores(high_score_list_b64_encoded):
 
 def save_high_scores_to_file(high_score_list):
     try:
-        with open(__snaykton_scores_filename, 'w') as snaykton_scores_file:
+        with open(__SNAYKTON_SCORES_FILENAME, 'w') as snaykton_scores_file:
             snaykton_scores_file.write(__encode_high_scores(high_score_list))
             return True
     except IOError:
@@ -45,12 +45,12 @@ def save_high_scores_to_file(high_score_list):
 
 def load_high_scores_from_file():
     try:
-        with open(__snaykton_scores_filename, 'r') as snaykton_scores_file:
+        with open(__SNAYKTON_SCORES_FILENAME, 'r') as snaykton_scores_file:
             everything = snaykton_scores_file.read()
             high_scores = __decode_high_scores(everything)
             return high_scores
     except FileNotFoundError:
-        print(f'File {__snaykton_scores_filename} not found. Will be created and encoded as an empty list. '
+        print(f'File {__SNAYKTON_SCORES_FILENAME} not found. Will be created and encoded as an empty list. '
               f'Empty list will be returned.')
         save_high_scores_to_file([])
         return []
