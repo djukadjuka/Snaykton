@@ -3,6 +3,7 @@ import PyQt5.QtWidgets as wigs
 import PyQt5.QtCore as qtCore
 from Components.HighScoreWindow import HighScoreWindow
 from Components.OptionsWindow import OptionsWindow
+from Components.StartGameWindow import StartGameWindow
 
 
 class MainWindow(wigs.QMainWindow):
@@ -72,7 +73,9 @@ class MainWindow(wigs.QMainWindow):
         self.high_score_window = HighScoreWindow()
 
     def __start_game(self):
-        print('Start Game')
+        self.start_game_window = StartGameWindow()
+        self.start_game_window.setModal(True)
+        self.start_game_window.show()
 
     def __quit_application(self):
         sys.exit(0)
