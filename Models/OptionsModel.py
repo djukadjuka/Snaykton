@@ -1,7 +1,7 @@
 
 class Options:
     def __init__(self, *args, **kwargs):
-        self.snake_speed = 10
+        self.snake_speed = 5
         self.snake_start_length = 3
 
     def __str__(self):
