@@ -5,15 +5,18 @@ import PyQt5.QtGui as qtgui
 import PyQt5.QtWidgets as wigs
 
 import Controls.OptionsControls as option_controls
+from Components.GameWidget import GameWidget
+from Models.GameStatusModel import GameStatusModel
 
 
 class StartGameWindow(wigs.QDialog):
     def __init__(self, *args, **kwargs):
         super(StartGameWindow, self).__init__(*args, **kwargs)
 
-        # -- TODO: Create space for current running game widget
-
         self.loaded_options = option_controls.load_options()
+        self.game_status = GameStatusModel()
+        self.game_status.snake_length = self.loaded_options.snake_start_length
+        self.game_status.snake_speed = self.loaded_options.snake_speed
         self.snake_speed = self.loaded_options.snake_speed
         self.snake_length = self.loaded_options.snake_start_length
         self.snake_points = 0
@@ -26,6 +29,7 @@ class StartGameWindow(wigs.QDialog):
         self.quit_game_button = wigs.QPushButton()
         self.quit_game_button.setText(self.quit_game_button_text)
         self.quit_game_button.clicked.connect(self.__quit_game_button_clicked)
+        self.quit_game_button.clearFocus()
 
         # -- Label to show current points
         self.current_points_label_text = 'Points: '
@@ -65,7 +69,15 @@ class StartGameWindow(wigs.QDialog):
         self.bottom_panel_hbox.addStretch(1)
         self.bottom_panel_hbox.addWidget(self.quit_game_button)
 
-        self.setLayout(self.bottom_panel_hbox)
+        self.game_widget = GameWidget(self.game_status)
+        self.game_widget.focusWidget()
+
+        self.main_layout = wigs.QVBoxLayout()
+        self.main_layout.addWidget(self.game_widget)
+        self.main_layout.addLayout(self.bottom_panel_hbox)
+
+        self.setLayout(self.main_layout)
 
     def __quit_game_button_clicked(self):
+        self.game_widget.game_timer.stop()
         self.close()

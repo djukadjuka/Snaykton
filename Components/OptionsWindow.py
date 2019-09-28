@@ -2,6 +2,7 @@ import PyQt5.QtWidgets as wigs
 import PyQt5.QtGui as qtgui
 import PyQt5.QtCore as qtcore
 import Controls.OptionsControls as OptionsControls
+import Models.OptionsModel as OptionsModel
 
 
 class OptionsWindow(wigs.QDialog):
@@ -32,8 +33,8 @@ class OptionsWindow(wigs.QDialog):
 
         self.snake_speed_slider = wigs.QSlider()
         self.snake_speed_slider.setTickInterval(1)
-        self.snake_speed_slider.setMaximum(10)
-        self.snake_speed_slider.setMinimum(1)
+        self.snake_speed_slider.setMaximum(OptionsModel.MAX_SNAKE_SPEED)
+        self.snake_speed_slider.setMinimum(OptionsModel.MIN_SNAKE_SPEED)
         self.snake_speed_slider.setToolTip(self.snake_speed_tooltip)
         self.snake_speed_slider.setOrientation(qtcore.Qt.Horizontal)
         self.snake_speed_slider.setValue(self.loaded_options.snake_speed)
@@ -58,8 +59,8 @@ class OptionsWindow(wigs.QDialog):
 
         self.snake_start_length_slider = wigs.QSlider()
         self.snake_start_length_slider.setTickInterval(1)
-        self.snake_start_length_slider.setMaximum(10)
-        self.snake_start_length_slider.setMinimum(1)
+        self.snake_start_length_slider.setMaximum(OptionsModel.MAX_SNAKE_START_LENGTH)
+        self.snake_start_length_slider.setMinimum(OptionsModel.MIN_SNAKE_START_LENGTH)
         self.snake_start_length_slider.setOrientation(qtcore.Qt.Horizontal)
         self.snake_start_length_slider.setValue(self.loaded_options.snake_start_length)
         self.snake_start_length_slider.valueChanged.connect(self.__snake_start_length_slider_value_changed)

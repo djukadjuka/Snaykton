@@ -1,4 +1,10 @@
 
+MAX_SNAKE_SPEED = 10
+MIN_SNAKE_SPEED = 1
+
+MAX_SNAKE_START_LENGTH = 10
+MIN_SNAKE_START_LENGTH = 5
+
 class Options:
     def __init__(self, *args, **kwargs):
         self.snake_speed = 5
