@@ -119,8 +119,7 @@ class OptionsWindow(wigs.QDialog):
         msg.setText(message_box_text)
         msg.setWindowTitle('Snaykton Options')
         msg.setStandardButtons(wigs.QMessageBox.Ok)
-        ret = msg.exec_()
-
+        msg.exec_()
 
     def __back_button_clicked(self):
         self.close()
