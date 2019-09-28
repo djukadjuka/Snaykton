@@ -6,24 +6,21 @@ import Controls.HighScoreControls as HighScoreControls
 from Components.ScrollableDataPanel import ScrollableDataPanel
 
 
-class HighScorePanel(wigs.QWidget):
+class HighScoreWindow(wigs.QDialog):
 
     def __init__(self, *args, **kwargs):
-        super(HighScorePanel, self).__init__(*args, **kwargs)
+        super(HighScoreWindow, self).__init__(*args, **kwargs)
 
         self.min_width = 320
         self.min_height = 360
 
-        # -- Setup methods
-        self.__housekeeping()
+        self.setMinimumHeight(self.min_height)
+        self.setMinimumWidth(self.min_width)
+        self.header_text = '$ High Scores $'
 
         # -- Setup layouts / components / ..
         self.init_components()
 
-    def __housekeeping(self):
-        self.setMinimumHeight(self.min_height)
-        self.setMinimumWidth(self.min_width)
-        self.header_text = '$ High Scores $'
 
     def init_components(self):
         # -- Configure Header
@@ -58,9 +55,11 @@ class HighScorePanel(wigs.QWidget):
         hbox_layout.setContentsMargins(20, 10, 20, 10)
 
         self.setLayout(hbox_layout)
+        self.setModal(True)
+        self.show()
 
     def __back_button_clicked(self):
-        print('Back button clicked!')
+        self.close()
 
     def __move_window_to_center(self):
         center_point = wigs.QDesktopWidget().availableGeometry().center()
