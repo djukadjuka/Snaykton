@@ -112,7 +112,15 @@ class OptionsWindow(wigs.QDialog):
         self.snake_speed_value_label.setText(str(self.loaded_options.snake_speed))
 
     def __apply_button_clicked(self):
-        print(f'Apply button clicked!')
+        OptionsControls.save_options(self.loaded_options)
+        msg = wigs.QMessageBox()
+        msg.setIcon(wigs.QMessageBox.Information)
+        message_box_text = 'Options saved!'
+        msg.setText(message_box_text)
+        msg.setWindowTitle('Snaykton Options')
+        msg.setStandardButtons(wigs.QMessageBox.Ok)
+        ret = msg.exec_()
+
 
     def __back_button_clicked(self):
         self.close()
