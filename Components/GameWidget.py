@@ -6,6 +6,7 @@ import PyQt5.QtGui as qtgui
 import PyQt5.QtWidgets as wigs
 import os
 import random
+import Controls.HighScoreControls as HighScoreControls
 
 from Components import StartGameWindow
 from Models.GameStatusModel import GameStatusModel
@@ -73,6 +74,7 @@ class GameWidget(wigs.QWidget):
         # -- Check if snake ate the food here
         self.draw_snake()
         self.game_painter.end()
+        self.snake_died()
 
     def draw_snake(self):
         self.painter_set_snake_painter()
@@ -220,6 +222,23 @@ class GameWidget(wigs.QWidget):
             elif event.key() == qtcore.Qt.Key_S or event.key() == qtcore.Qt.Key_Down:
                 self.snake_direction = self.__DIRECTION_DOWN
                 self.repaint()
+
+    def snake_died(self):
+        # -- First check if snake hit self
+        snake_dead = False
+        if len(set(self.snake_cells)) != len(self.snake_cells):
+            snake_dead = True
+
+        snake_head = self.snake_cells[len(self.snake_cells) - 1]
+        # -- Check if snake hit wall
+        if snake_head[0] < 0 or snake_head[0] > self.window_min_width or snake_head[1] < 0 or snake_head[1] > self.window_min_height:
+            snake_dead = True
+
+        if snake_dead:
+            self.game_timer.stop()
+            msg = qt.QMessageBox()
+            msg.setWindowTitle('Game over!')
+            self.parent.close()
 
     def start(self):
         self.is_game_started = True
