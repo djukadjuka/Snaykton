@@ -69,7 +69,7 @@ class StartGameWindow(wigs.QDialog):
         self.bottom_panel_hbox.addStretch(1)
         self.bottom_panel_hbox.addWidget(self.quit_game_button)
 
-        self.game_widget = GameWidget(self.game_status)
+        self.game_widget = GameWidget(self.game_status, self)
         self.game_widget.focusWidget()
 
         self.main_layout = wigs.QVBoxLayout()
@@ -77,6 +77,12 @@ class StartGameWindow(wigs.QDialog):
         self.main_layout.addLayout(self.bottom_panel_hbox)
 
         self.setLayout(self.main_layout)
+
+    def increase_points(self, points):
+        self.current_points_value_label.setText(str(points))
+
+    def increase_snake_length_value(self, length):
+        self.current_snake_length_value_label.setText(str(length))
 
     def __quit_game_button_clicked(self):
         self.game_widget.game_timer.stop()
