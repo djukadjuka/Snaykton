@@ -59,6 +59,8 @@ class GameWidget(wigs.QWidget):
         # -- Initialize food
         self.food_position = None
         self.special_food_position = None
+        self.special_food_max_time = 150
+        self.special_food_current_time = 0
 
         self.start()
 
@@ -112,6 +114,11 @@ class GameWidget(wigs.QWidget):
     def draw_special_food(self):
         if self.special_food_position is None:
             return
+        if self.special_food_current_time == self.special_food_max_time:
+            self.special_food_position = None
+            self.special_food_current_time = 0
+            return
+        self.special_food_current_time += 1
         self.painter_set_special_food_painter()
         self.game_painter.drawEllipse(self.special_food_position[0], self.special_food_position[1], self.snake_cell_size, self.snake_cell_size)
 
@@ -143,6 +150,7 @@ class GameWidget(wigs.QWidget):
             special_food_y = random.randint(ymin, ymax) * 5
 
         self.special_food_position = (special_food_x, special_food_y)
+        self.special_food_current_time = 0
 
     def painter_set_snake_painter(self):
         self.game_painter.setPen(qt.QPen(qt.QColor(0, 0, 0), 1, qtcore.Qt.SolidLine))
