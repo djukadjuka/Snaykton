@@ -235,9 +235,8 @@ class GameWidget(wigs.QWidget):
             snake_dead = True
 
         if snake_dead:
+            self.game_status.snake_pulse = self.game_status.SNAKE_PULSE_DEAD
             self.game_timer.stop()
-            msg = qt.QMessageBox()
-            msg.setWindowTitle('Game over!')
             self.parent.close()
 
     def start(self):

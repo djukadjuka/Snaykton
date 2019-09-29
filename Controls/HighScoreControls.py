@@ -10,7 +10,7 @@ __SNAYKTON_SCORES_FILENAME = os.getcwd() + '\\snaykton_scores.score'
 
 def __generate_high_score_list():
     names = ['Reggie', 'Mick', 'Geoff', 'Stan', 'John', 'Dennis', 'Tony', 'Pat', 'Patrick', 'Arnold', 'Joe']
-    sorted_random_points = sorted([random.randint(10, 500) for _ in range(10)])
+    sorted_random_points = sorted([random.randint(2, 5) for _ in range(10)])
     sorted_random_points.reverse()
 
     # -- Create list of name-point pairs
@@ -51,9 +51,10 @@ def load_high_scores_from_file():
             return high_scores
     except FileNotFoundError:
         print(f'File {__SNAYKTON_SCORES_FILENAME} not found. Will be created and encoded as an empty list. '
-              f'Empty list will be returned.')
-        save_high_scores_to_file([])
-        return []
+              f'Generated list will be returned.')
+        new_scores = __generate_high_score_list()
+        save_high_scores_to_file(new_scores)
+        return new_scores
 
 
 # save_high_scores_to_file(__generate_high_score_list())

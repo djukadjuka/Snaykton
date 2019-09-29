@@ -6,6 +6,7 @@ import PyQt5.QtWidgets as wigs
 
 import Controls.OptionsControls as option_controls
 from Components.GameWidget import GameWidget
+from Controls import HighScoreControls
 from Models.GameStatusModel import GameStatusModel
 
 
@@ -87,3 +88,27 @@ class StartGameWindow(wigs.QDialog):
     def __quit_game_button_clicked(self):
         self.game_widget.game_timer.stop()
         self.close()
+
+    def closeEvent(self, a0: qtgui.QCloseEvent) -> None:
+        if self.game_status.snake_pulse == self.game_status.SNAKE_PULSE_ALIVE:
+            super(StartGameWindow, self).closeEvent(a0)
+            return
+
+        high_scores = HighScoreControls.load_high_scores_from_file()
+        all_scores = [hs[1] for hs in high_scores]
+
+        # -- If there is not a new high score, then a basic message box can be displayed
+        if all_scores[len(all_scores) - 1] >= self.game_status.points:
+            msgbox = wigs.QMessageBox()
+            msgbox.setWindowTitle('Game Over')
+            message_box_text = 'It looks like you have died ... :(\n'
+            message_box_text += 'Your final stats are as follows: \n'
+            message_box_text += str(self.game_status)
+            msgbox.setText(message_box_text)
+            msgbox.exec()
+        else:
+            # -- TODO: Make new dialog with textbox for name
+            pass
+
+
+        super(StartGameWindow, self).closeEvent(a0)
