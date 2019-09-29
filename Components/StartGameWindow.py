@@ -82,6 +82,9 @@ class StartGameWindow(wigs.QDialog):
     def increase_points(self, points):
         self.current_points_value_label.setText(str(points))
 
+    def increase_snake_length(self, length):
+        self.current_snake_length_value_label.setText(str(length))
+
     def increase_snake_length_value(self, length):
         self.current_snake_length_value_label.setText(str(length))
 

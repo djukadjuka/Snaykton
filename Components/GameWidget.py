@@ -27,6 +27,7 @@ class GameWidget(wigs.QWidget):
 
         # -- Save game status to a local var
         self.game_status = game_status
+
         # -- Save parent to increase view points
         self.parent = parent
 
@@ -96,10 +97,14 @@ class GameWidget(wigs.QWidget):
                                        self.snake_cell_size,
                                        self.snake_cell_size)
 
-        self.food_eaten()
-        self.special_food_eaten()
+        ate_food = self.food_eaten() or self.special_food_eaten()
 
-        self.snake_cells.pop(0)
+        if not ate_food:
+            self.snake_cells.pop(0)
+        else:
+            self.game_status.snake_length += 1
+            self.parent.increase_snake_length(self.game_status.snake_length)
+
         self.snake_cells.append((
                 self.snake_cells[len(self.snake_cells)-1][0] + offset_x,
                 self.snake_cells[len(self.snake_cells)-1][1] + offset_y
