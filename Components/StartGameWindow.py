@@ -97,17 +97,59 @@ class StartGameWindow(wigs.QDialog):
         high_scores = HighScoreControls.load_high_scores_from_file()
         all_scores = [hs[1] for hs in high_scores]
 
+        eulogy = 'It looks like you have died ... :(\n'
+        eulogy += 'Your final stats are as follows: \n'
+        eulogy += str(self.game_status)
+
         # -- If there is not a new high score, then a basic message box can be displayed
         if all_scores[len(all_scores) - 1] >= self.game_status.points:
             msgbox = wigs.QMessageBox()
             msgbox.setWindowTitle('Game Over')
-            message_box_text = 'It looks like you have died ... :(\n'
-            message_box_text += 'Your final stats are as follows: \n'
-            message_box_text += str(self.game_status)
-            msgbox.setText(message_box_text)
+            msgbox.setText(eulogy)
             msgbox.exec()
         else:
-            # -- TODO: Make new dialog with textbox for name
+            death_dialog = wigs.QDialog()
+            death_dialog.setWindowTitle('$ NEW HIGH SCORE! $')
+            death_dialog_v_box = wigs.QVBoxLayout()
+
+            death_dialog_label = wigs.QLabel(eulogy)
+
+            death_dialog_name_input = wigs.QLineEdit()
+            death_dialog_name_input_label = wigs.QLabel('Your Name: ')
+            death_dialog_name_okay_button = wigs.QPushButton('OK')
+            death_dialog_name_okay_button.setEnabled(False)
+            def death_dialog_okay_button_clicked():
+                for (idx, hs) in enumerate(high_scores):
+                    if hs[1] < self.game_status.points:
+                        high_scores.insert(idx, [death_dialog_name_input.text(), self.game_status.points])
+                        break
+                high_scores.pop()
+                HighScoreControls.save_high_scores_to_file(high_scores)
+                death_dialog.close()
+            death_dialog_name_okay_button.clicked.connect(death_dialog_okay_button_clicked)
+            death_dialog_name_h_layout = wigs.QHBoxLayout()
+            death_dialog_name_h_layout.addWidget(death_dialog_name_input_label)
+            death_dialog_name_h_layout.addWidget(death_dialog_name_input)
+            def name_text_changed():
+                txt = death_dialog_name_input.text()
+                if len(txt) == 0 or len(txt) > 20:
+                    death_dialog_name_okay_button.setEnabled(False)
+                else:
+                    death_dialog_name_okay_button.setEnabled(True)
+            death_dialog_name_input.textChanged.connect(name_text_changed)
+            death_dialog_name_v_layout = wigs.QVBoxLayout()
+            death_dialog_name_v_layout.addLayout(death_dialog_name_h_layout)
+            death_dialog_name_v_layout.addWidget(death_dialog_name_okay_button)
+
+            death_dialog_v_box.addWidget(death_dialog_label)
+            death_dialog_v_box.addLayout(death_dialog_name_v_layout)
+
+            death_dialog_h_box = wigs.QHBoxLayout()
+            death_dialog_h_box.addLayout(death_dialog_v_box)
+
+            death_dialog.setLayout(death_dialog_h_box)
+            death_dialog.setModal(True)
+            death_dialog.exec_()
             pass
 
 
